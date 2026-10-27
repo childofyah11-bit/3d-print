@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="PrintOptimizer Pro is a browser-based 3D print planning tool for profiles, material choices, queue management, and printer settings."
+    />
+    <title>PrintOptimizer Pro</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar">
+        <div class="brand-wrap">
+          <div class="brand-mark">3D</div>
+          <div>
+            <p class="eyebrow">Print workflow</p>
+            <h1>PrintOptimizer Pro</h1>
+          </div>
+        </div>
+        <button id="saveButton" class="primary-button" type="button">Save</button>
+      </header>
+
+      <nav class="tab-nav" aria-label="Main navigation">
+        <button class="tab-button active" data-tab="dashboard" type="button">Dashboard</button>
+        <button class="tab-button" data-tab="profiles" type="button">Profiles</button>
+        <button class="tab-button" data-tab="filaments" type="button">Filaments</button>
+        <button class="tab-button" data-tab="queue" type="button">Queue</button>
+        <button class="tab-button" data-tab="settings" type="button">Settings</button>
+      </nav>
+
+      <main class="content-area">
+        <section id="dashboard" class="tab-panel active" aria-label="Dashboard section">
+          <div class="page-header">
+            <div>
+              <p class="section-label">Overview</p>
+              <h2>Print dashboard</h2>
+            </div>
+          </div>
+
+          <div id="overviewCards" class="stats-grid"></div>
+
+          <div class="panel-grid two-column">
+            <article class="panel">
+              <div class="panel-header">
+                <h3>Current recommendation</h3>
+                <span class="chip">AI-assisted</span>
+              </div>
+              <div id="recommendationPanel" class="recommendation-panel"></div>
+            </article>
+
+            <article class="panel">
+              <div class="panel-header">
+                <h3>Quick notes</h3>
+              </div>
+              <ul class="bullet-list">
+                <li>Check bed adhesion before starting large flat parts.</li>
+                <li>Lower nozzle temp by 5–10°C for the first layer on glossy PLA.</li>
+                <li>Use a 15–20% gyroid infill for a strong but efficient part.</li>
+              </ul>
+            </article>
+          </div>
+        </section>
+
+        <section id="profiles" class="tab-panel" aria-label="Profiles section">
+          <div class="page-header">
+            <div>
+              <p class="section-label">Profiles</p>
+              <h2>Printer settings library</h2>
+            </div>
+          </div>
+
+          <div class="panel-grid two-column wide-gap">
+            <article class="panel form-panel">
+              <div class="panel-header">
+                <h3>Add or update profile</h3>
+              </div>
+
+              <form id="profileForm">
+                <input type="hidden" id="profileId" />
+                <div class="field-grid">
+                  <label>
+                    <span>Profile name</span>
+                    <input id="profileName" type="text" placeholder="Miniature PLA Quality" required />
+                  </label>
+                  <label>
+                    <span>Printer</span>
+                    <input id="profilePrinter" type="text" value="Bambu X1C" required />
+                  </label>
+                  <label>
+                    <span>Filament</span>
+                    <input id="profileFilament" type="text" value="PLA Basic" required />
+                  </label>
+                  <label>
+                    <span>Print type</span>
+                    <input id="profileType" type="text" value="Miniature" required />
+                  </label>
+                  <label>
+                    <span>Primary goal</span>
+                    <input id="profileGoal" type="text" value="Best Quality" required />
+                  </label>
+                  <label>
+                    <span>Layer height</span>
+                    <input id="profileLayerHeight" type="number" min="0.05" max="0.5" step="0.01" value="0.12" required />
+                  </label>
+                  <label>
+                    <span>Nozzle temp (°C)</span>
+                    <input id="profileNozzleTemp" type="number" min="150" max="300" value="215" required />
+                  </label>
+                  <label>
+                    <span>Bed temp (°C)</span>
+                    <input id="profileBedTemp" type="number" min="20" max="120" value="60" required />
+                  </label>
+                  <label>
+                    <span>Wall count</span>
+                    <input id="profileWallCount" type="number" min="1" max="12" value="3" required />
+                  </label>
+                  <label>
+                    <span>Infill %</span>
+                    <input id="profileInfill" type="number" min="5" max="100" value="15" required />
+                  </label>
+                  <label>
+                    <span>Print speed</span>
+                    <input id="profilePrintSpeed" type="number" min="30" max="400" value="180" required />
+                  </label>
+                  <label>
+                    <span>Cooling %</span>
+                    <input id="profileCooling" type="number" min="0" max="100" value="100" required />
+                  </label>
+                </div>
+
+                <div class="form-actions">
+                  <button class="primary-button" type="submit">Save profile</button>
+                  <button id="resetProfileForm" class="ghost-button" type="button">Reset</button>
+                </div>
+              </form>
+            </article>
+
+            <article class="panel">
+              <div class="panel-header">
+                <h3>Saved profiles</h3>
+              </div>
+              <div id="profileList" class="stack-list"></div>
+            </article>
+          </div>
+        </section>
+
+        <section id="filaments" class="tab-panel" aria-label="Filaments section">
+          <div class="page-header">
+            <div>
+              <p class="section-label">Materials</p>
+              <h2>Filament library</h2>
+            </div>
+          </div>
+
+          <div class="panel-grid one-column">
+            <article class="panel">
+              <div class="panel-header compact">
+                <h3>Search filaments</h3>
+                <input id="filamentSearch" class="search-input" type="search" placeholder="Search material or type" />
+              </div>
+              <div id="filamentList" class="card-grid"></div>
+            </article>
+          </div>
+        </section>
+
+        <section id="queue" class="tab-panel" aria-label="Queue section">
+          <div class="page-header">
+            <div>
+              <p class="section-label">Workflow</p>
+              <h2>Print queue</h2>
+            </div>
+          </div>
+
+          <div class="panel-grid two-column wide-gap">
+            <article class="panel form-panel">
+              <div class="panel-header">
+                <h3>Add print job</h3>
+              </div>
+
+              <form id="queueForm">
+                <div class="field-grid single-column">
+                  <label>
+                    <span>Job name</span>
+                    <input id="queueName" type="text" placeholder="Desk organizer" required />
+                  </label>
+                  <label>
+                    <span>Material</span>
+                    <input id="queueMaterial" type="text" placeholder="PLA Basic" required />
+                  </label>
+                  <label>
+                    <span>Estimated print time (hours)</span>
+                    <input id="queueTime" type="number" min="0.5" max="120" step="0.5" value="6.5" required />
+                  </label>
+                  <label>
+                    <span>Part weight (g)</span>
+                    <input id="queueWeight" type="number" min="10" max="20000" step="5" value="210" required />
+                  </label>
+                  <label>
+                    <span>Priority</span>
+                    <select id="queuePriority">
+                      <option value="Low">Low</option>
+                      <option value="Normal" selected>Normal</option>
+                      <option value="High">High</option>
+                    </select>
+                  </label>
+                </div>
+
+                <div class="form-actions">
+                  <button class="primary-button" type="submit">Add job</button>
+                </div>
+              </form>
+            </article>
+
+            <article class="panel">
+              <div class="panel-header">
+                <h3>Queue list</h3>
+              </div>
+              <div id="queueList" class="stack-list"></div>
+            </article>
+          </div>
+        </section>
+
+        <section id="settings" class="tab-panel" aria-label="Settings section">
+          <div class="page-header">
+            <div>
+              <p class="section-label">Preferences</p>
+              <h2>Application settings</h2>
+            </div>
+          </div>
+
+          <div class="panel-grid two-column">
+            <article class="panel form-panel">
+              <div class="panel-header">
+                <h3>Behavior</h3>
+              </div>
+
+              <form id="settingsForm">
+                <div class="field-grid">
+                  <label>
+                    <span>Default printer</span>
+                    <input id="settingPrinter" type="text" value="Bambu X1C" />
+                  </label>
+                  <label>
+                    <span>Default filament</span>
+                    <input id="settingFilament" type="text" value="PLA Basic" />
+                  </label>
+                  <label>
+                    <span>Display units</span>
+                    <select id="settingUnits">
+                      <option value="mm">mm</option>
+                      <option value="in">in</option>
+                    </select>
+                  </label>
+                  <label class="toggle-row">
+                    <span>Autosave</span>
+                    <input id="settingAutosave" type="checkbox" checked />
+                  </label>
+                </div>
+
+                <div class="form-actions">
+                  <button class="primary-button" type="submit">Save settings</button>
+                  <button id="resetDataButton" class="danger-button" type="button">Reset storage</button>
+                </div>
+              </form>
+            </article>
+
+            <article class="panel">
+              <div class="panel-header">
+                <h3>Info</h3>
+              </div>
+              <ul class="bullet-list">
+                <li>All settings are stored locally in your browser.</li>
+                <li>This app runs entirely without a backend.</li>
+                <li>Deployable directly to GitHub Pages as a static site.</li>
+              </ul>
+            </article>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
