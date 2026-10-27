@@ -1,0 +1,84 @@
+{
+  "filaments": [
+    {
+      "name": "Bambu PLA",
+      "material": "PLA",
+      "nozzle_temp": 215,
+      "bed_temp": 60,
+      "flow_rate": 0.98,
+      "notes": "Easy to print and very beginner friendly."
+    },
+    {
+      "name": "Bambu PETG",
+      "material": "PETG",
+      "nozzle_temp": 240,
+      "bed_temp": 80,
+      "flow_rate": 0.97,
+      "notes": "Stronger but harder to tune and less forgiving."
+    },
+    {
+      "name": "Bambu TPU",
+      "material": "TPU",
+      "nozzle_temp": 230,
+      "bed_temp": 50,
+      "flow_rate": 1.05,
+      "notes": "Flexible, soft, and best printed slowly."
+    },
+    {
+      "name": "Sunlu PLA",
+      "material": "PLA",
+      "nozzle_temp": 210,
+      "bed_temp": 55,
+      "flow_rate": 0.97,
+      "notes": "Affordable and widely recommended."
+    },
+    {
+      "name": "Elegoo PLA",
+      "material": "PLA",
+      "nozzle_temp": 210,
+      "bed_temp": 55,
+      "flow_rate": 0.97,
+      "notes": "Consistent and easy to dial in."
+    },
+    {
+      "name": "eSUN PLA+",
+      "material": "PLA+",
+      "nozzle_temp": 220,
+      "bed_temp": 60,
+      "flow_rate": 0.98,
+      "notes": "Tougher and more durable than standard PLA."
+    },
+    {
+      "name": "Overture PLA",
+      "material": "PLA",
+      "nozzle_temp": 210,
+      "bed_temp": 60,
+      "flow_rate": 0.98,
+      "notes": "Reliable and easy to print in many setups."
+    },
+    {
+      "name": "Generic PLA",
+      "material": "PLA",
+      "nozzle_temp": 210,
+      "bed_temp": 60,
+      "flow_rate": 0.98,
+      "notes": "General-purpose starter material."
+    },
+    {
+      "name": "Generic PETG",
+      "material": "PETG",
+      "nozzle_temp": 235,
+      "bed_temp": 75,
+      "flow_rate": 0.97,
+      "notes": "Used for tougher parts or outdoor use."
+    },
+    {
+      "name": "Generic TPU",
+      "material": "TPU",
+      "nozzle_temp": 230,
+      "bed_temp": 50,
+      "flow_rate": 1.03,
+      "notes": "Flexible with slower movement and softer tuning."
+    }
+  ]
+}

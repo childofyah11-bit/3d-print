@@ -1,0 +1,68 @@
+{
+  "printers": [
+    {
+      "name": "Bambu P1S",
+      "brand": "Bambu Lab",
+      "max_speed": 500,
+      "notes": "Excellent default profile for high detail and balanced speed.",
+      "default_bed_temp": 60,
+      "default_nozzle_temp": 215
+    },
+    {
+      "name": "Bambu X1C",
+      "brand": "Bambu Lab",
+      "max_speed": 550,
+      "notes": "Premium reliability with strong enclosure and filament control.",
+      "default_bed_temp": 60,
+      "default_nozzle_temp": 215
+    },
+    {
+      "name": "Bambu A1",
+      "brand": "Bambu Lab",
+      "max_speed": 500,
+      "notes": "Simple setup and beginner friendly automatic tuning.",
+      "default_bed_temp": 60,
+      "default_nozzle_temp": 215
+    },
+    {
+      "name": "Bambu A1 Mini",
+      "brand": "Bambu Lab",
+      "max_speed": 450,
+      "notes": "Great compact printer with simple material presets.",
+      "default_bed_temp": 55,
+      "default_nozzle_temp": 210
+    },
+    {
+      "name": "Prusa MK4",
+      "brand": "Prusa",
+      "max_speed": 300,
+      "notes": "Exceptional quality with a well-tuned calibration routine.",
+      "default_bed_temp": 60,
+      "default_nozzle_temp": 220
+    },
+    {
+      "name": "Ender 3",
+      "brand": "Creality",
+      "max_speed": 180,
+      "notes": "A strong beginner platform, but calibration matters more.",
+      "default_bed_temp": 60,
+      "default_nozzle_temp": 210
+    },
+    {
+      "name": "Ender 3 V3",
+      "brand": "Creality",
+      "max_speed": 300,
+      "notes": "Modern upgrade with better motion and more consistent results.",
+      "default_bed_temp": 60,
+      "default_nozzle_temp": 215
+    },
+    {
+      "name": "Custom",
+      "brand": "User Defined",
+      "max_speed": 250,
+      "notes": "Use conservative settings unless you know your machine well.",
+      "default_bed_temp": 60,
+      "default_nozzle_temp": 210
+    }
+  ]
+}

@@ -1,0 +1,126 @@
+from __future__ import annotations
+
+import json
+import os
+import tkinter as tk
+from tkinter import filedialog, ttk
+
+from core.profile_manager import ProfileManager
+
+
+class SettingsTab(tk.Frame):
+    """Theme, autosave, profile management, and export/import tools."""
+
+    def __init__(self, parent, profile_manager: ProfileManager):
+        super().__init__(parent, bg="#111827")
+        self.profile_manager = profile_manager
+
+        self.settings = self.profile_manager.load_app_settings()
+
+        settings_group = ttk.Frame(self)
+        settings_group.pack(fill="x", padx=16, pady=(16, 8))
+
+        ttk.Label(settings_group, text="Theme", width=18).grid(row=0, column=0, padx=(0, 12), pady=6, sticky="w")
+        self.theme_var = tk.StringVar(value=self.settings.get("theme", "dark"))
+        ttk.Combobox(settings_group, textvariable=self.theme_var, values=["dark", "light"], state="readonly", width=18).grid(row=0, column=1, sticky="w")
+
+        self.autosave_var = tk.BooleanVar(value=bool(self.settings.get("autosave", True)))
+        ttk.Checkbutton(settings_group, text="Autosave", variable=self.autosave_var).grid(row=1, column=1, sticky="w", pady=8)
+
+        ttk.Button(settings_group, text="Save Settings", command=self.save_settings).grid(row=2, column=1, sticky="w", pady=(12, 0))
+
+        profiles_group = ttk.Frame(self)
+        profiles_group.pack(fill="both", expand=True, padx=16, pady=(0, 12))
+
+        ttk.Label(profiles_group, text="Profile Management", font=("Segoe UI", 12, "bold")).pack(anchor="w", pady=(0, 8))
+
+        profile_controls = ttk.Frame(profiles_group)
+        profile_controls.pack(fill="x", pady=(0, 8))
+        ttk.Label(profile_controls, text="Profile Name").pack(side="left")
+        self.profile_name_var = tk.StringVar()
+        ttk.Entry(profile_controls, textvariable=self.profile_name_var, width=30).pack(side="left", padx=(8, 10))
+        ttk.Button(profile_controls, text="Save Profile", command=self.save_profile).pack(side="left")
+        ttk.Button(profile_controls, text="Load Profile", command=self.load_profile).pack(side="left", padx=(8, 0))
+        ttk.Button(profile_controls, text="Export Profile", command=self.export_profile).pack(side="left", padx=(8, 0))
+        ttk.Button(profile_controls, text="Import Profile", command=self.import_profile).pack(side="left", padx=(8, 0))
+
+        self.profile_list = tk.Listbox(profiles_group, height=12, width=60, bg="#0f172a", fg="#e2e8f0", borderwidth=0, highlightthickness=0)
+        self.profile_list.pack(fill="both", expand=True)
+        self.refresh_profiles()
+
+    def refresh_profiles(self):
+        self.profile_list.delete(0, tk.END)
+        profiles = self.profile_manager.list_profile_names()
+        for profile in profiles:
+            self.profile_list.insert(tk.END, profile)
+
+    def save_settings(self):
+        self.settings["theme"] = self.theme_var.get()
+        self.settings["autosave"] = self.autosave_var.get()
+        self.profile_manager.save_app_settings(self.settings)
+
+    def save_profile(self):
+        name = self.profile_name_var.get().strip()
+        if not name:
+            name = "New Profile"
+        profile = {
+            "name": name,
+            "printer": "Bambu X1C",
+            "filament": "Bambu PLA",
+            "print_type": "Miniature",
+            "goal": "Balanced",
+            "settings": {
+                "layer_height": 0.16,
+                "nozzle_temperature": 215,
+                "bed_temperature": 60,
+                "wall_count": 3,
+                "top_layers": 4,
+                "bottom_layers": 4,
+                "infill_percent": 15,
+                "infill_pattern": "Gyroid",
+                "print_speed": 180,
+                "travel_speed": 250,
+                "cooling_percent": 80,
+            },
+        }
+        if self.profile_manager.validate_profile(profile):
+            self.profile_manager.save_profile(name, profile)
+            self.refresh_profiles()
+
+    def load_profile(self):
+        selection = self.profile_list.curselection()
+        if not selection:
+            return
+        profile_name = self.profile_list.get(selection[0])
+        profile = self.profile_manager.load_profile(profile_name)
+        if profile:
+            self.profile_name_var.set(profile.get("name", ""))
+            self.show_message(f"Loaded profile: {profile['name']}")
+
+    def export_profile(self):
+        selection = self.profile_list.curselection()
+        if not selection:
+            return
+        profile_name = self.profile_list.get(selection[0])
+        file_path = filedialog.asksaveasfilename(defaultextension=".json", filetypes=[("JSON", "*.json")])
+        if file_path:
+            self.profile_manager.export_profile(profile_name, file_path)
+            self.show_message(f"Exported profile to: {file_path}")
+
+    def import_profile(self):
+        file_path = filedialog.askopenfilename(filetypes=[("JSON", "*.json")])
+        if not file_path:
+            return
+        try:
+            imported = self.profile_manager.import_profile(file_path)
+            self.refresh_profiles()
+            self.show_message(f"Imported profile: {imported.get('name', 'Unknown')}")
+        except Exception as exc:
+            self.show_message(f"Import failed: {exc}")
+
+    def show_message(self, message: str):
+        top = tk.Toplevel(self)
+        top.title("Profile Notice")
+        top.geometry("340x120")
+        ttk.Label(top, text=message, wraplength=300).pack(padx=16, pady=16)
+        ttk.Button(top, text="OK", command=top.destroy).pack(pady=(0, 16))

@@ -1,0 +1,36 @@
+# PrintOptimizer Pro
+
+PrintOptimizer Pro is a beginner-friendly desktop application for simplifying 3D printing setup. It helps users choose settings with no slicer knowledge required by asking only a few simple questions: printer, filament, print type, and priority.
+
+## Features
+
+- Beginner-friendly optimizer flow
+- Tkinter desktop GUI with dark theme
+- Printer and filament databases
+- Automatic setting generation
+- AI-style prompt recommendation using natural language
+- Queue manager for GCODE files
+- Profile save/load/import/export
+- Analysis panel with quality, strength, speed, and time estimates
+
+## Requirements
+
+- Python 3.10+
+- Tkinter (usually included with Python for Windows)
+
+## Run
+
+```bash
+python main.py
+```
+
+## Project Structure
+
+- `main.py` - app entry point
+- `core/` - optimization, analysis, queue, and profile logic
+- `ui/` - tab-based interface modules
+- `data/` - JSON profile and machine info
+
+## Notes
+
+This project is designed for Windows-first desktop use and is intentionally simple for beginners while still offering professional recommendations.
