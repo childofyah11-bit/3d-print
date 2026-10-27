@@ -1,533 +1,664 @@
-:root {
-  --bg: #0b1120;
-  --bg-soft: #111827;
-  --panel: rgba(17, 24, 39, 0.9);
-  --panel-strong: #111827;
-  --card: #0f172a;
-  --card-alt: #172033;
-  --line: rgba(148, 163, 184, 0.2);
-  --text: #e2e8f0;
-  --text-muted: #94a3b8;
-  --primary: #60a5fa;
-  --primary-strong: #2563eb;
-  --success: #34d399;
-  --warning: #fbbf24;
-  --danger: #f87171;
-  --shadow: 0 18px 35px rgba(2, 6, 23, 0.45);
-}
-
-* {
-  box-sizing: border-box;
-}
-
-html {
-  background: var(--bg);
-  color: var(--text);
-  scroll-behavior: smooth;
-}
-
-body {
-  margin: 0;
-  min-height: 100vh;
-  background:
-    radial-gradient(circle at top left, rgba(96, 165, 250, 0.14), transparent 25%),
-    radial-gradient(circle at bottom right, rgba(52, 211, 153, 0.1), transparent 20%),
-    var(--bg);
-  color: var(--text);
-  font-family: "Inter", sans-serif;
-}
-
-button,
-input,
-select {
-  font: inherit;
-}
-
-button {
-  cursor: pointer;
-}
-
-.app-shell {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 24px 18px 60px;
-}
-
-.topbar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  padding: 18px 20px;
-  border: 1px solid var(--line);
-  background: rgba(15, 23, 42, 0.86);
-  border-radius: 18px;
-  box-shadow: var(--shadow);
-  backdrop-filter: blur(14px);
-}
-
-.brand-wrap {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-}
-
-.brand-mark {
-  display: grid;
-  place-items: center;
-  width: 42px;
-  height: 42px;
-  border-radius: 12px;
-  background: linear-gradient(135deg, var(--primary), var(--primary-strong));
-  color: #f8fafc;
-  font-weight: 800;
-}
-
-.eyebrow {
-  margin: 0;
-  color: var(--text-muted);
-  text-transform: uppercase;
-  font-size: 0.7rem;
-  letter-spacing: 0.12em;
-}
-
-h1,
-h2,
-h3,
-p {
-  margin: 0;
-}
-
-h1 {
-  font-size: clamp(1.4rem, 2vw, 2.1rem);
-}
-
-.primary-button,
-.ghost-button,
-.danger-button,
-.tab-button {
-  border: 1px solid transparent;
-  border-radius: 12px;
-  transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
-}
-
-.primary-button,
-.ghost-button,
-.danger-button {
-  padding: 0.75rem 1rem;
-  font-weight: 600;
-}
-
-.primary-button {
-  color: #f8fafc;
-  background: linear-gradient(135deg, var(--primary), var(--primary-strong));
-  box-shadow: 0 10px 20px rgba(37, 99, 235, 0.3);
-}
-
-.ghost-button {
-  background: transparent;
-  color: var(--text);
-  border-color: var(--line);
-}
-
-.danger-button {
-  background: rgba(248, 113, 113, 0.12);
-  color: #fecaca;
-  border-color: rgba(248, 113, 113, 0.25);
-}
-
-.primary-button:hover,
-.ghost-button:hover,
-.danger-button:hover,
-.tab-button:hover {
-  transform: translateY(-1px);
-}
-
-.tab-nav {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin: 22px 0 18px;
-}
-
-.tab-button {
-  background: rgba(15, 23, 42, 0.75);
-  color: var(--text-muted);
-  border-color: var(--line);
-  padding: 0.8rem 1.1rem;
-  font-weight: 600;
-}
-
-.tab-button.active {
-  background: rgba(96, 165, 250, 0.14);
-  border-color: rgba(96, 165, 250, 0.42);
-  color: var(--text);
-}
-
-.content-area {
-  min-height: 560px;
-}
-
-.tab-panel {
-  display: none;
-}
-
-.tab-panel.active {
-  display: block;
-}
-
-.page-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 18px;
-}
-
-.section-label {
-  color: var(--text-muted);
-  font-size: 0.75rem;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  margin-bottom: 6px;
-}
-
-.panel-grid {
-  display: grid;
-  gap: 18px;
-}
-
-.two-column {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-}
-
-.one-column {
-  grid-template-columns: 1fr;
-}
-
-.wide-gap {
-  gap: 25px;
-}
-
-.panel {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  padding: 20px;
-  border: 1px solid var(--line);
-  border-radius: 18px;
-  background: rgba(15, 23, 42, 0.86);
-  box-shadow: var(--shadow);
-}
-
-.form-panel {
-  padding-bottom: 18px;
-}
-
-.panel-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 10px;
-}
-
-.panel-header.compact {
-  align-items: center;
-}
+const STORAGE_KEY = "printoptimizer-pro-settings-v1";
+
+const defaultState = {
+  settings: {
+    theme: "dark",
+    autosave: true,
+    defaultPrinter: "Bambu X1C",
+    defaultFilament: "PLA Basic",
+    units: "mm"
+  },
+  profiles: [
+    {
+      id: "profile-1",
+      name: "Beginner PLA Quality",
+      printer: "Bambu X1C",
+      filament: "PLA Basic",
+      printType: "Miniature",
+      goal: "Best Quality",
+      settings: {
+        layerHeight: 0.12,
+        nozzleTemp: 215,
+        bedTemp: 60,
+        wallCount: 3,
+        infill: 15,
+        printSpeed: 180,
+        cooling: 100
+      }
+    }
+  ],
+  queue: [
+    {
+      id: "queue-1",
+      name: "Desk organizer",
+      material: "PLA Basic",
+      printTime: 6.5,
+      weight: 210,
+      priority: "Normal",
+      status: "Queued"
+    }
+  ],
+  filamentLibrary: [
+    {
+      name: "PLA Basic",
+      type: "PLA",
+      color: "Natural",
+      nozzle: 205,
+      bed: 60,
+      notes: "Balanced quality and ease of use for everyday prints."
+    },
+    {
+      name: "PETG Pro",
+      type: "PETG",
+      color: "Black",
+      nozzle: 240,
+      bed: 80,
+      notes: "Impact resistant and durable for functional parts."
+    },
+    {
+      name: "ABS Plus",
+      type: "ABS",
+      color: "Gray",
+      nozzle: 245,
+      bed: 95,
+      notes: "Heat resistant and strong for enclosure-like assemblies."
+    },
+    {
+      name: "TPU Flex",
+      type: "TPU",
+      color: "Blue",
+      nozzle: 220,
+      bed: 55,
+      notes: "Flexible and forgiving for vibration-damping applications."
+    },
+    {
+      name: "PLA-CF",
+      type: "Composite",
+      color: "Carbon",
+      nozzle: 230,
+      bed: 60,
+      notes: "Stiff, lightweight, and ideal for crisp engineering details."
+    }
+  ]
+};
+
+const state = loadState();
+
+const tabButtons = document.querySelectorAll(".tab-button");
+const tabPanels = document.querySelectorAll(".tab-panel");
+const saveButton = document.getElementById("saveButton");
+const profileForm = document.getElementById("profileForm");
+const queueForm = document.getElementById("queueForm");
+const settingsForm = document.getElementById("settingsForm");
+const profileList = document.getElementById("profileList");
+const queueList = document.getElementById("queueList");
+const filamentList = document.getElementById("filamentList");
+const filamentSearch = document.getElementById("filamentSearch");
+const overviewCards = document.getElementById("overviewCards");
+const recommendationPanel = document.getElementById("recommendationPanel");
+const resetProfileFormButton = document.getElementById("resetProfileForm");
+const resetDataButton = document.getElementById("resetDataButton");
+const dropZone = document.getElementById("dropZone");
+const fileInput = document.getElementById("fileInput");
+const browseFilesButton = document.getElementById("browseFilesButton");
 
-.chip {
-  display: inline-flex;
-  align-items: center;
-  padding: 0.4rem 0.7rem;
-  border-radius: 999px;
-  background: rgba(52, 211, 153, 0.1);
-  color: #a7f3d0;
-  border: 1px solid rgba(52, 211, 153, 0.2);
-  font-size: 0.72rem;
-  font-weight: 700;
-}
-
-.stats-grid {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 16px;
-  margin-bottom: 20px;
-}
-
-.stat-card {
-  padding: 20px;
-  border: 1px solid var(--line);
-  border-radius: 18px;
-  background: linear-gradient(180deg, rgba(17, 24, 39, 0.8), rgba(15, 23, 42, 0.94));
-}
-
-.stat-label {
-  color: var(--text-muted);
-  font-size: 0.8rem;
-  margin-bottom: 6px;
-}
-
-.stat-value {
-  font-size: clamp(1.5rem, 2vw, 2.5rem);
-  font-weight: 800;
-}
-
-.recommendation-panel {
-  display: grid;
-  gap: 12px;
-}
-
-.recommendation-head {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 16px;
-}
-
-.big-score {
-  font-size: clamp(2rem, 4vw, 3rem);
-  font-weight: 800;
-}
-
-.meta-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-
-.meta-pill {
-  padding: 0.4rem 0.7rem;
-  border-radius: 999px;
-  background: rgba(96, 165, 250, 0.12);
-  color: #bfdbfe;
-  border: 1px solid rgba(96, 165, 250, 0.2);
-  font-size: 0.76rem;
-}
-
-.bullet-list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: grid;
-  gap: 12px;
-  color: var(--text-muted);
-}
-
-.bullet-list li {
-  position: relative;
-  padding-left: 1.1rem;
-}
-
-.bullet-list li::before {
-  content: "•";
-  position: absolute;
-  left: 0;
-  color: var(--primary);
-}
-
-.field-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 16px;
-}
-
-.field-grid.single-column {
-  grid-template-columns: 1fr;
-}
-
-label {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  color: var(--text-muted);
-  font-size: 0.82rem;
-}
-
-input,
-select {
-  background: rgba(15, 23, 42, 0.9);
-  color: var(--text);
-  border: 1px solid var(--line);
-  border-radius: 12px;
-  padding: 0.8rem 0.9rem;
-}
-
-input:focus,
-select:focus {
-  outline: 2px solid rgba(96, 165, 250, 0.35);
-  border-color: rgba(96, 165, 250, 0.42);
-}
-
-.search-input {
-  max-width: 260px;
-  width: 100%;
-}
-
-.form-actions {
-  display: flex;
-  gap: 12px;
-  flex-wrap: wrap;
-  margin-top: 12px;
-}
-
-.stack-list {
-  display: grid;
-  gap: 12px;
-}
-
-.profile-item,
-.queue-item,
-.filament-card {
-  border: 1px solid var(--line);
-  border-radius: 16px;
-  background: rgba(15, 23, 42, 0.72);
-}
-
-.profile-item,
-.queue-item {
-  padding: 16px;
-}
-
-.profile-item-header,
-.queue-item-header {
-  display: flex;
-  justify-content: space-between;
-  gap: 10px;
-  align-items: center;
-  margin-bottom: 10px;
-}
-
-.profile-item h4,
-.queue-item h4,
-.filament-card h4 {
-  margin: 0;
-  font-size: 1.05rem;
-}
-
-.item-actions {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-  margin-top: 10px;
-}
+init();
 
-.action-button {
-  border: 1px solid var(--line);
-  background: rgba(15, 23, 42, 0.8);
-  color: var(--text);
-  border-radius: 10px;
-  padding: 0.5rem 0.8rem;
-  font-size: 0.8rem;
+function init() {
+  bindTabs();
+  bindForms();
+  bindFileDrop();
+  fillSettingsForm();
+  renderAll();
 }
 
-.action-button.delete {
-  color: #fecaca;
-  border-color: rgba(248, 113, 113, 0.4);
-}
-
-.meta-line {
-  color: var(--text-muted);
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  font-size: 0.82rem;
-}
-
-.card-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 16px;
-}
-
-.filament-card {
-  padding: 16px;
-}
-
-.filament-card .badge {
-  display: inline-flex;
-  margin-bottom: 10px;
-  padding: 0.35rem 0.6rem;
-  border-radius: 999px;
-  background: rgba(52, 211, 153, 0.12);
-  color: #a7f3d0;
-  border: 1px solid rgba(52, 211, 153, 0.2);
-  font-size: 0.72rem;
-  font-weight: 700;
-}
-
-.priority-tag {
-  font-size: 0.72rem;
-  padding: 0.3rem 0.6rem;
-  border-radius: 999px;
-  border: 1px solid var(--line);
-  color: var(--text-muted);
-}
-
-.priority-tag.high { background: rgba(248, 113, 113, 0.12); color: #fecaca; }
-.priority-tag.normal { background: rgba(96, 165, 250, 0.12); color: #bfdbfe; }
-.priority-tag.low { background: rgba(52, 211, 153, 0.12); color: #a7f3d0; }
-
-.toggle-row {
-  flex-direction: row !important;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0.8rem 0.9rem;
-  border: 1px solid var(--line);
-  border-radius: 12px;
-  background: rgba(15, 23, 42, 0.9);
-}
-
-.toggle-row input {
-  width: 18px;
-  height: 18px;
-}
-
-.empty-state {
-  padding: 18px;
-  border: 1px dashed var(--line);
-  border-radius: 12px;
-  color: var(--text-muted);
-  text-align: center;
-}
+function loadState() {
+  const stored = localStorage.getItem(STORAGE_KEY);
 
-@media (max-width: 860px) {
-  .stats-grid,
-  .two-column,
-  .field-grid {
-    grid-template-columns: 1fr;
+  if (!stored) {
+    return structuredClone(defaultState);
   }
 
-  .topbar {
-    flex-wrap: wrap;
-  }
-
-  .brand-wrap {
-    width: 100%;
-  }
-
-  .primary-button,
-  .ghost-button,
-  .danger-button {
-    width: 100%;
-  }
-
-  .tab-nav {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+  try {
+    const parsed = JSON.parse(stored);
+    return {
+      ...structuredClone(defaultState),
+      ...parsed,
+      settings: {
+        ...defaultState.settings,
+        ...(parsed.settings || {})
+      },
+      profiles: Array.isArray(parsed.profiles) ? parsed.profiles : defaultState.profiles,
+      queue: Array.isArray(parsed.queue) ? parsed.queue : defaultState.queue,
+      filamentLibrary: Array.isArray(parsed.filamentLibrary)
+        ? parsed.filamentLibrary
+        : defaultState.filamentLibrary
+    };
+  } catch (error) {
+    return structuredClone(defaultState);
   }
 }
 
-@media (max-width: 480px) {
-  .app-shell {
-    padding-left: 12px;
-    padding-right: 12px;
+function saveState() {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+}
+
+function bindTabs() {
+  tabButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      const target = button.dataset.tab;
+      tabButtons.forEach((item) => {
+        item.classList.toggle("active", item === button);
+      });
+      tabPanels.forEach((panel) => {
+        panel.classList.toggle("active", panel.id === target);
+      });
+    });
+  });
+}
+
+function bindForms() {
+  saveButton.addEventListener("click", () => {
+    saveState();
+    flashButton(saveButton, "Saved");
+  });
+
+  profileForm.addEventListener("submit", (event) => {
+    event.preventDefault();
+
+    const formData = readProfileForm();
+    const existingId = document.getElementById("profileId").value;
+
+    if (existingId) {
+      const index = state.profiles.findIndex((profile) => profile.id === existingId);
+      if (index >= 0) {
+        state.profiles[index] = {
+          ...state.profiles[index],
+          ...formData
+        };
+      }
+    } else {
+      state.profiles.unshift({
+        id: `profile-${Date.now()}`,
+        ...formData
+      });
+    }
+
+    if (state.settings.autosave) {
+      saveState();
+    }
+
+    profileForm.reset();
+    resetProfileForm();
+    renderAll();
+  });
+
+  queueForm.addEventListener("submit", (event) => {
+    event.preventDefault();
+
+    const job = {
+      id: `queue-${Date.now()}`,
+      name: document.getElementById("queueName").value.trim(),
+      material: document.getElementById("queueMaterial").value.trim(),
+      printTime: Number(document.getElementById("queueTime").value),
+      weight: Number(document.getElementById("queueWeight").value),
+      priority: document.getElementById("queuePriority").value,
+      status: "Queued"
+    };
+
+    if (!job.name || !job.material) {
+      return;
+    }
+
+    state.queue.unshift(job);
+
+    if (state.settings.autosave) {
+      saveState();
+    }
+
+    queueForm.reset();
+    renderAll();
+  });
+
+  settingsForm.addEventListener("submit", (event) => {
+    event.preventDefault();
+
+    state.settings.defaultPrinter = document.getElementById("settingPrinter").value.trim() || "Bambu X1C";
+    state.settings.defaultFilament = document.getElementById("settingFilament").value.trim() || "PLA Basic";
+    state.settings.units = document.getElementById("settingUnits").value;
+    state.settings.autosave = document.getElementById("settingAutosave").checked;
+
+    saveState();
+    renderAll();
+  });
+
+  filamentSearch.addEventListener("input", () => {
+    renderFilaments();
+  });
+
+  resetProfileFormButton.addEventListener("click", () => {
+    resetProfileForm();
+  });
+
+  resetDataButton.addEventListener("click", () => {
+    if (!confirm("Reset all saved browser data?")) {
+      return;
+    }
+
+    Object.keys(state).forEach((key) => delete state[key]);
+    Object.assign(state, structuredClone(defaultState));
+    fillSettingsForm();
+    renderAll();
+    saveState();
+    flashButton(resetDataButton, "Reset");
+  });
+
+  browseFilesButton.addEventListener("click", () => fileInput.click());
+  fileInput.addEventListener("change", (event) => {
+    const files = Array.from(event.target.files || []);
+    if (files.length) {
+      addDroppedFiles(files);
+    }
+    fileInput.value = "";
+  });
+}
+
+function bindFileDrop() {
+  ["dragenter", "dragover"].forEach((eventName) => {
+    dropZone.addEventListener(eventName, (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+      dropZone.classList.add("dragover");
+    });
+  });
+
+  ["dragleave", "drop"].forEach((eventName) => {
+    dropZone.addEventListener(eventName, (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+      dropZone.classList.remove("dragover");
+    });
+  });
+
+  dropZone.addEventListener("drop", (event) => {
+    const files = Array.from(event.dataTransfer?.files || []);
+    if (files.length) {
+      addDroppedFiles(files);
+    }
+  });
+
+  dropZone.addEventListener("keydown", (event) => {
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      fileInput.click();
+    }
+  });
+}
+
+function addDroppedFiles(files) {
+  const supported = files.filter((file) => isSupportedPrintFile(file.name));
+
+  if (!supported.length) {
+    alert("Please drop a supported printable file: STL, OBJ, 3MF, G-code, AMF, or STEP.");
+    return;
   }
 
-  .topbar,
-  .panel {
-    padding: 16px;
+  const chosen = supported[0];
+  const name = stripExtension(chosen.name);
+  const estimatedHours = estimatePrintTime(chosen.size);
+  const material = detectMaterial(chosen.name);
+
+  document.getElementById("queueName").value = name;
+  document.getElementById("queueMaterial").value = material;
+  document.getElementById("queueTime").value = estimatedHours;
+  document.getElementById("queueWeight").value = Math.max(80, Math.round(chosen.size / 120));
+  document.getElementById("queuePriority").value = "Normal";
+
+  flashButton(dropZone.querySelector("h4"), "File ready");
+}
+
+function isSupportedPrintFile(name) {
+  const allowed = [
+    ".stl",
+    ".3mf",
+    ".obj",
+    ".gcode",
+    ".gcodes",
+    ".amf",
+    ".step",
+    ".stp"
+  ];
+
+  const lower = name.toLowerCase();
+  return allowed.some((ext) => lower.endsWith(ext));
+}
+
+function stripExtension(name) {
+  return name.replace(/\.[^/.]+$/, "") || name;
+}
+
+function estimatePrintTime(sizeBytes) {
+  const mb = sizeBytes / (1024 * 1024);
+  return Math.min(48, Math.max(1.5, Number((mb * 1.7 + 2).toFixed(1))));
+}
+
+function detectMaterial(fileName) {
+  const lower = fileName.toLowerCase();
+  if (lower.includes("petg")) return "PETG Pro";
+  if (lower.includes("abs")) return "ABS Plus";
+  if (lower.includes("tpu") || lower.includes("flex")) return "TPU Flex";
+  if (lower.includes("cf") || lower.includes("carbon")) return "PLA-CF";
+  return "PLA Basic";
+}
+
+function readProfileForm() {
+  return {
+    name: document.getElementById("profileName").value.trim(),
+    printer: document.getElementById("profilePrinter").value.trim(),
+    filament: document.getElementById("profileFilament").value.trim(),
+    printType: document.getElementById("profileType").value.trim(),
+    goal: document.getElementById("profileGoal").value.trim(),
+    settings: {
+      layerHeight: Number(document.getElementById("profileLayerHeight").value),
+      nozzleTemp: Number(document.getElementById("profileNozzleTemp").value),
+      bedTemp: Number(document.getElementById("profileBedTemp").value),
+      wallCount: Number(document.getElementById("profileWallCount").value),
+      infill: Number(document.getElementById("profileInfill").value),
+      printSpeed: Number(document.getElementById("profilePrintSpeed").value),
+      cooling: Number(document.getElementById("profileCooling").value)
+    }
+  };
+}
+
+function fillSettingsForm() {
+  document.getElementById("settingPrinter").value = state.settings.defaultPrinter;
+  document.getElementById("settingFilament").value = state.settings.defaultFilament;
+  document.getElementById("settingUnits").value = state.settings.units;
+  document.getElementById("settingAutosave").checked = state.settings.autosave;
+}
+
+function renderAll() {
+  renderOverview();
+  renderProfiles();
+  renderFilaments();
+  renderQueue();
+  fillSettingsForm();
+}
+
+function renderOverview() {
+  const totalProfiles = state.profiles.length;
+  const activeQueue = state.queue.filter((item) => item.status !== "Completed").length;
+  const avgInfill = totalProfiles
+    ? Math.round(
+        state.profiles.reduce((sum, item) => sum + Number(item.settings.infill || 0), 0) / totalProfiles
+      )
+    : 0;
+  const totalHours = state.queue.reduce((sum, item) => sum + Number(item.printTime || 0), 0);
+
+  const cards = [
+    { label: "Profiles", value: totalProfiles },
+    { label: "Queue jobs", value: activeQueue },
+    { label: "Avg infill", value: `${avgInfill}%` },
+    { label: "Print hours", value: `${totalHours.toFixed(1)}h` }
+  ];
+
+  overviewCards.innerHTML = cards
+    .map(
+      (card) => `
+        <article class="stat-card">
+          <div class="stat-label">${card.label}</div>
+          <div class="stat-value">${card.value}</div>
+        </article>
+      `
+    )
+    .join("");
+
+  const profile = state.profiles[0];
+  const recommendation = profile
+    ? {
+        score: 92,
+        name: profile.name,
+        printer: profile.printer,
+        filament: profile.filament,
+        settings: profile.settings,
+        printType: profile.printType
+      }
+    : {
+        score: 0,
+        name: "No profile yet",
+        printer: "—",
+        filament: "—",
+        settings: {},
+        printType: "—"
+      };
+
+  recommendationPanel.innerHTML = `
+    <div class="recommendation-head">
+      <div>
+        <h3>${recommendation.name}</h3>
+        <div class="meta-row">
+          <span class="meta-pill">${recommendation.printer}</span>
+          <span class="meta-pill">${recommendation.filament}</span>
+          <span class="meta-pill">${recommendation.printType}</span>
+        </div>
+      </div>
+      <div class="big-score">${recommendation.score}</div>
+    </div>
+
+    <div class="meta-line">
+      <span>Layer: ${recommendation.settings.layerHeight ?? "—"} mm</span>
+      <span>•</span>
+      <span>Infill: ${recommendation.settings.infill ?? "—"}%</span>
+      <span>•</span>
+      <span>Cooling: ${recommendation.settings.cooling ?? "—"}%</span>
+    </div>
+
+    <div class="meta-line">
+      <span>Nozzle: ${recommendation.settings.nozzleTemp ?? "—"}°C</span>
+      <span>•</span>
+      <span>Bed: ${recommendation.settings.bedTemp ?? "—"}°C</span>
+      <span>•</span>
+      <span>Speed: ${recommendation.settings.printSpeed ?? "—"} mm/s</span>
+    </div>
+  `;
+}
+
+function renderProfiles() {
+  if (!state.profiles.length) {
+    profileList.innerHTML = '<div class="empty-state">No profiles yet. Add one to start optimizing your workflow.</div>';
+    return;
   }
 
-  .tab-nav {
-    grid-template-columns: 1fr;
+  profileList.innerHTML = state.profiles
+    .map(
+      (profile) => `
+        <article class="profile-item">
+          <div class="profile-item-header">
+            <h4>${profile.name}</h4>
+            <span class="chip">${profile.goal}</span>
+          </div>
+
+          <div class="meta-line">
+            <span>${profile.printer}</span>
+            <span>•</span>
+            <span>${profile.filament}</span>
+            <span>•</span>
+            <span>${profile.printType}</span>
+          </div>
+
+          <div class="meta-line">
+            <span>Layer ${profile.settings.layerHeight} mm</span>
+            <span>•</span>
+            <span>${profile.settings.nozzleTemp}°C nozzle</span>
+            <span>•</span>
+            <span>${profile.settings.infill}% infill</span>
+          </div>
+
+          <div class="item-actions">
+            <button class="action-button" type="button" data-action="edit-profile" data-id="${profile.id}">Edit</button>
+            <button class="action-button delete" type="button" data-action="delete-profile" data-id="${profile.id}">Delete</button>
+          </div>
+        </article>
+      `
+    )
+    .join("");
+
+  profileList.querySelectorAll("[data-action='edit-profile']").forEach((button) => {
+    button.addEventListener("click", () => {
+      fillProfileForm(button.dataset.id);
+    });
+  });
+
+  profileList.querySelectorAll("[data-action='delete-profile']").forEach((button) => {
+    button.addEventListener("click", () => {
+      state.profiles = state.profiles.filter((profile) => profile.id !== button.dataset.id);
+      if (state.settings.autosave) {
+        saveState();
+      }
+      renderAll();
+    });
+  });
+}
+
+function fillProfileForm(profileId) {
+  const profile = state.profiles.find((item) => item.id === profileId);
+  if (!profile) return;
+
+  document.getElementById("profileId").value = profile.id;
+  document.getElementById("profileName").value = profile.name;
+  document.getElementById("profilePrinter").value = profile.printer;
+  document.getElementById("profileFilament").value = profile.filament;
+  document.getElementById("profileType").value = profile.printType;
+  document.getElementById("profileGoal").value = profile.goal;
+  document.getElementById("profileLayerHeight").value = profile.settings.layerHeight;
+  document.getElementById("profileNozzleTemp").value = profile.settings.nozzleTemp;
+  document.getElementById("profileBedTemp").value = profile.settings.bedTemp;
+  document.getElementById("profileWallCount").value = profile.settings.wallCount;
+  document.getElementById("profileInfill").value = profile.settings.infill;
+  document.getElementById("profilePrintSpeed").value = profile.settings.printSpeed;
+  document.getElementById("profileCooling").value = profile.settings.cooling;
+
+  const submitButton = profileForm.querySelector("button[type='submit']");
+  submitButton.textContent = "Update profile";
+}
+
+function resetProfileForm() {
+  profileForm.reset();
+  document.getElementById("profileId").value = "";
+  document.getElementById("profilePrinter").value = state.settings.defaultPrinter;
+  document.getElementById("profileFilament").value = state.settings.defaultFilament;
+  document.getElementById("profileType").value = "Miniature";
+  document.getElementById("profileGoal").value = "Best Quality";
+  document.getElementById("profileLayerHeight").value = 0.12;
+  document.getElementById("profileNozzleTemp").value = 215;
+  document.getElementById("profileBedTemp").value = 60;
+  document.getElementById("profileWallCount").value = 3;
+  document.getElementById("profileInfill").value = 15;
+  document.getElementById("profilePrintSpeed").value = 180;
+  document.getElementById("profileCooling").value = 100;
+
+  const submitButton = profileForm.querySelector("button[type='submit']");
+  submitButton.textContent = "Save profile";
+}
+
+function renderFilaments() {
+  const query = filamentSearch.value.trim().toLowerCase();
+  const filtered = state.filamentLibrary.filter((material) => {
+    const haystack = `${material.name} ${material.type} ${material.color} ${material.notes}`.toLowerCase();
+    return haystack.includes(query);
+  });
+
+  if (!filtered.length) {
+    filamentList.innerHTML = '<div class="empty-state">No materials match your search.</div>';
+    return;
   }
+
+  filamentList.innerHTML = filtered
+    .map(
+      (material) => `
+        <article class="filament-card">
+          <span class="badge">${material.type}</span>
+          <h4>${material.name}</h4>
+          <div class="meta-line">
+            <span>${material.color}</span>
+            <span>•</span>
+            <span>${material.nozzle}°C nozzle</span>
+            <span>•</span>
+            <span>${material.bed}°C bed</span>
+          </div>
+          <p class="meta-line">${material.notes}</p>
+        </article>
+      `
+    )
+    .join("");
+}
+
+function renderQueue() {
+  if (!state.queue.length) {
+    queueList.innerHTML = '<div class="empty-state">No jobs in the queue yet.</div>';
+    return;
+  }
+
+  queueList.innerHTML = state.queue
+    .map(
+      (job) => `
+        <article class="queue-item">
+          <div class="queue-item-header">
+            <h4>${job.name}</h4>
+            <span class="priority-tag ${job.priority.toLowerCase()}">${job.priority}</span>
+          </div>
+
+          <div class="meta-line">
+            <span>${job.material}</span>
+            <span>•</span>
+            <span>${job.printTime}h</span>
+            <span>•</span>
+            <span>${job.weight}g</span>
+          </div>
+
+          <div class="item-actions">
+            <button class="action-button" type="button" data-action="toggle-status" data-id="${job.id}">
+              ${job.status === "Completed" ? "Reopen" : "Complete"}
+            </button>
+            <button class="action-button delete" type="button" data-action="delete-job" data-id="${job.id}">Delete</button>
+          </div>
+        </article>
+      `
+    )
+    .join("");
+
+  queueList.querySelectorAll("[data-action='toggle-status']").forEach((button) => {
+    button.addEventListener("click", () => {
+      const job = state.queue.find((item) => item.id === button.dataset.id);
+      if (!job) return;
+
+      job.status = job.status === "Completed" ? "Queued" : "Completed";
+      if (state.settings.autosave) {
+        saveState();
+      }
+      renderAll();
+    });
+  });
+
+  queueList.querySelectorAll("[data-action='delete-job']").forEach((button) => {
+    button.addEventListener("click", () => {
+      state.queue = state.queue.filter((job) => job.id !== button.dataset.id);
+      if (state.settings.autosave) {
+        saveState();
+      }
+      renderAll();
+    });
+  });
+}
+
+function flashButton(buttonOrElement, label) {
+  const element = buttonOrElement instanceof HTMLElement ? buttonOrElement : null;
+  if (!element) return;
+
+  const previous = element.textContent;
+  element.textContent = label;
+
+  setTimeout(() => {
+    element.textContent = previous;
+  }, 800);
 }
