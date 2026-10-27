@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       name="description"
-      content="PrintOptimizer Pro is a browser-based 3D print planning dashboard for profiles, queue management, materials, and settings."
+      content="PrintOptimizer Pro is a browser-based 3D print workflow dashboard for profiles, queue planning, materials, and settings."
     />
     <title>PrintOptimizer Pro</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -27,8 +27,10 @@
             <h1>PrintOptimizer Pro</h1>
           </div>
         </div>
+
         <div class="header-actions">
-          <button id="saveButton" class="primary-button" type="button">Save changes</button>
+          <button id="saveButton" class="primary-button" type="button">Save data</button>
+          <button id="exportButton" class="ghost-button" type="button">Export</button>
         </div>
       </header>
 
@@ -41,18 +43,18 @@
       </nav>
 
       <main class="content-area">
-        <section id="dashboard" class="tab-panel active" aria-label="Dashboard">
+        <section id="dashboard" class="tab-panel active" aria-label="Dashboard section">
           <div class="page-header">
             <div>
               <p class="section-label">Overview</p>
-              <h2>Print dashboard</h2>
+              <h2>Smart print dashboard</h2>
             </div>
           </div>
 
           <div id="overviewCards" class="stats-grid"></div>
 
           <div class="panel-grid two-column">
-            <article class="panel">
+            <article class="panel recommendation-panel-card">
               <div class="panel-header">
                 <h3>Recommended setup</h3>
                 <span class="chip">AI-assisted</span>
@@ -62,19 +64,26 @@
 
             <article class="panel">
               <div class="panel-header">
-                <h3>Quick guide</h3>
+                <h3>Workflow actions</h3>
               </div>
+
+              <div class="action-stack">
+                <button class="action-link" type="button" data-action="apply-best-profile">Apply best profile</button>
+                <button class="action-link" type="button" data-action="create-quick-job">Create quick queue job</button>
+                <button class="action-link" type="button" data-action="focus-queue">Open queue</button>
+              </div>
+
               <ul class="bullet-list">
                 <li>Check bed adhesion before starting large flat parts.</li>
-                <li>Reduce nozzle temperature by 5–10°C for the first layer on glossy PLA.</li>
-                <li>Use gyroid infill at 15–20% for a strong, efficient daily print.</li>
-                <li>Keep the first layer slow and stable for better dimensional accuracy.</li>
+                <li>Slow the first layer by 20–30% for better surface consistency.</li>
+                <li>Use gyroid infill at 15–20% for strong, efficient everyday prints.</li>
+                <li>Keep nozzle temperature stable for cleaner overhangs.</li>
               </ul>
             </article>
           </div>
         </section>
 
-        <section id="profiles" class="tab-panel" aria-label="Profiles">
+        <section id="profiles" class="tab-panel" aria-label="Profiles section">
           <div class="page-header">
             <div>
               <p class="section-label">Profiles</p>
@@ -158,7 +167,7 @@
           </div>
         </section>
 
-        <section id="filaments" class="tab-panel" aria-label="Filaments">
+        <section id="filaments" class="tab-panel" aria-label="Filaments section">
           <div class="page-header">
             <div>
               <p class="section-label">Materials</p>
@@ -177,7 +186,7 @@
           </div>
         </section>
 
-        <section id="queue" class="tab-panel" aria-label="Queue">
+        <section id="queue" class="tab-panel" aria-label="Queue section">
           <div class="page-header">
             <div>
               <p class="section-label">Workflow</p>
@@ -189,6 +198,14 @@
             <article class="panel form-panel">
               <div class="panel-header">
                 <h3>Add print job</h3>
+              </div>
+
+              <div id="dropZone" class="drop-zone" tabindex="0" aria-label="Drag and drop print file">
+                <input id="fileInput" type="file" accept=".stl,.3mf,.obj,.gcode,.amf,.step,.stp" hidden />
+                <div class="drop-icon">⇪</div>
+                <h4>Drag &amp; drop a print file here</h4>
+                <p id="dropZoneMeta">STL, 3MF, OBJ, G-code, STEP, and more</p>
+                <button id="browseFilesButton" class="secondary-button" type="button">Browse files</button>
               </div>
 
               <form id="queueForm">
@@ -234,7 +251,7 @@
           </div>
         </section>
 
-        <section id="settings" class="tab-panel" aria-label="Settings">
+        <section id="settings" class="tab-panel" aria-label="Settings section">
           <div class="page-header">
             <div>
               <p class="section-label">Preferences</p>
@@ -273,7 +290,7 @@
 
                 <div class="form-actions">
                   <button class="primary-button" type="submit">Save settings</button>
-                  <button id="resetDataButton" class="danger-button" type="button">Reset storage</button>
+                  <button id="resetDataButton" class="danger-button" type="button">Reset data</button>
                 </div>
               </form>
             </article>
@@ -284,8 +301,8 @@
               </div>
               <ul class="bullet-list">
                 <li>All settings are stored locally in your browser.</li>
-                <li>This app runs entirely without a backend or desktop framework.</li>
-                <li>It is deployable directly to GitHub Pages as a static website.</li>
+                <li>This app works fully client-side with no backend.</li>
+                <li>It’s deployable directly to GitHub Pages as a static site.</li>
               </ul>
             </article>
           </div>
